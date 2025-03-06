@@ -1,0 +1,28 @@
+<resources>
+    <string name="app_name">AppWithHostSDKDemo</string>
+    <string name="game_name_default">Game Name</string>
+    <string name="game_desc_default">Game Description</string>
+    <string name="game_type_default">Game Type</string>
+    <string name="game_play">打开</string>
+    <string name="game_icon">game_icon</string>
+    <string name="search">搜索</string>
+    <string name="background_image">Background Image</string>
+    <string name="instant_games">Instant Games</string>
+    <string name="game_list_background_image">Game List Background Image</string>
+    <string name="unity_minigame_host">Unity 小游戏宿主</string>
+    <string name="recently_played">最近游玩</string>
+    <string name="more">更多</string>
+    <string name="all_games">所有游戏</string>
+    <string name="home_title_background_mask">Home Title Background Mask</string>
+    <string name="home_title_background">Home Title Background</string>
+    <string name="game_badge">Game Badge</string>
+    <string name="back_btn">Back Btn</string>
+    <string name="scan_tip">请将二维码放入框中扫描</string>
+    <string name="please_input_test_pkg_info_url">请输入测试包信息地址</string>
+    <string name="download_pkg_error_hint">游戏包下载失败</string>
+    <string name="list">列表</string>
+    <string name="scan">扫码</string>
+    <string name="default_server_domain">Default Server Domain</string>
+    <string name="default_org_name">Default Org Name</string>
+    <string name="default_runtime_sdk_version">Default Runtime SDK Version</string>
+</resources>

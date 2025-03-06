@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- 激活状态的颜色 -->
+    <item android:color="@color/menu_item_selected" android:state_checked="true" />
+    <!-- 未激活状态的颜色 -->
+    <item android:color="@color/menu_item_unselected" android:state_checked="false" />
+</selector>

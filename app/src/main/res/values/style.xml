@@ -1,0 +1,9 @@
+<!-- res/values/styles.xml -->
+<resources>
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="android:windowLightStatusBar">true</item> <!-- 状态栏文本为深色 -->
+        <item name="android:statusBarColor">@android:color/white</item> <!-- 状态栏背景色 -->
+    </style>
+</resources>

@@ -1,0 +1,77 @@
+plugins {
+    alias(libs.plugins.android.application)
+}
+
+android {
+    namespace 'com.u3d.appwithhostsdkdemo'
+    compileSdk 34
+
+    defaultConfig {
+        applicationId "com.unity3d.unityconnect"
+        minSdk 24
+        targetSdk 34
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
+    }
+
+    buildFeatures{
+        aidl true
+    }
+}
+
+dependencies {
+    implementation libs.appcompat
+    implementation libs.material
+    implementation libs.navigation.fragment
+    implementation libs.navigation.ui
+    testImplementation libs.junit
+    androidTestImplementation libs.ext.junit
+    androidTestImplementation libs.espresso.core
+
+    // image loader for UI
+    implementation libs.glide
+
+    // host aar
+    implementation files('libs/host/host-runtime-release.aar')
+
+    // dependencies for host-runtime SDK
+    implementation libs.okhttp
+    implementation libs.mmkv
+    implementation libs.gson
+    implementation libs.java.websocket
+
+    implementation libs.camera.core
+    implementation libs.camera.camera2
+    implementation libs.camera.lifecycle
+    implementation libs.camera.video
+    implementation libs.camera.view
+    implementation libs.camera.extensions
+
+    implementation libs.tbssdk
+
+    // perf data upload SDK, not necessary for host-runtime
+    implementation libs.rangersapplog.all.cn
+
+    // ad SDKs, not necessary host-runtime
+    implementation fileTree(include: ["*.jar", "*.aar"], dir: 'libs/AdNetworks/core')
+    implementation fileTree(include: ["*.jar", "*.aar"], dir: 'libs/AdNetworks/csj')
+    implementation fileTree(include: ["*.jar", "*.aar"], dir: 'libs/AdNetworks/gromore')
+    implementation fileTree(include: ["*.jar", "*.aar"], dir: 'libs/AdNetworks/gdt')
+    implementation fileTree(include: ["*.jar", "*.aar"], dir: 'libs/AdNetworks/xbid')
+
+    // QR code scanner SDK, not necessary for host-runtime
+    implementation libs.zxing.android.embedded
+}

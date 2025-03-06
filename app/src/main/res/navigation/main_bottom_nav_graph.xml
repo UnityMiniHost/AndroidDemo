@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/homeFragment">
+
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.u3d.appwithhostsdkdemo.home.HomeFragment"
+        android:label="Home" />
+    <fragment
+        android:id="@+id/scanFragment"
+        android:name="com.u3d.appwithhostsdkdemo.scan.ScanFragment"
+        android:label="Scan" />
+
+</navigation>

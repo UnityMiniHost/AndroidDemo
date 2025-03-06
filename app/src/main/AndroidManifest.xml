@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <!--Permissions for ToBid Ad SDK-->
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="true" />
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission
+        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        tools:node="replace" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.CAMERA"/>
+
+    <application
+        android:name=".MainApplication"
+        android:allowBackup="true"
+        tools:replace="android:allowBackup"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.AppWithHostSDKDemo"
+        android:hardwareAccelerated="true"
+        tools:targetApi="31">
+
+        <activity android:name=".MainActivity"
+            android:exported="true"
+            android:configChanges="keyboard|orientation|screenSize|keyboardHidden|navigation|screenLayout">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+
+        <activity android:name=".host.MultiProcHostContainerActivity1"
+            android:launchMode="singleTask"
+            android:process=":hostProc1"
+            android:taskAffinity="com.u3d.appwithhostsdkdemo.host.affinity1">
+        </activity>
+        <activity android:name=".host.MultiProcHostContainerActivity2"
+            android:launchMode="singleTask"
+            android:process=":hostProc2"
+            android:taskAffinity="com.u3d.appwithhostsdkdemo.host.affinity2">
+        </activity>
+        <activity android:name=".host.MultiProcHostContainerActivity3"
+            android:launchMode="singleTask"
+            android:process=":hostProc3"
+            android:taskAffinity="com.u3d.appwithhostsdkdemo.host.affinity3">
+        </activity>
+        <activity android:name=".host.MultiProcHostContainerActivity4"
+            android:launchMode="singleTask"
+            android:process=":hostProc4"
+            android:taskAffinity="com.u3d.appwithhostsdkdemo.host.affinity4">
+        </activity>
+        <activity android:name=".host.MultiProcHostContainerActivity5"
+            android:launchMode="singleTask"
+            android:process=":hostProc5"
+            android:taskAffinity="com.u3d.appwithhostsdkdemo.host.affinity5">
+        </activity>
+
+        <activity android:name=".recentlyPlayed.PlayedGamesActivity">
+        </activity>
+
+        <service android:name=".home.service.LoginService"/>
+        <service android:name="com.u3d.webglhost.toolkit.multiproc.TJMiniGameService"/>
+    </application>
+
+</manifest>

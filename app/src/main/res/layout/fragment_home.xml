@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <!--        Title-->
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="16dp"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:paddingBottom="8dp">
+
+            <com.u3d.appwithhostsdkdemo.home.ui.RoundedLayout
+                android:id="@+id/title"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cornerRadius="16dp">
+
+                <ImageView
+                    android:id="@+id/titleIv"
+                    android:layout_width="match_parent"
+                    android:layout_height="150dp"
+                    android:contentDescription="@string/home_title_background"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/home_title_background" />
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="94dp"
+                    android:contentDescription="@string/home_title_background_mask"
+                    android:layout_gravity="bottom"
+                    android:src="@drawable/home_title_background_mask"/>
+            </com.u3d.appwithhostsdkdemo.home.ui.RoundedLayout>
+
+            <TextView
+                android:id="@+id/titleTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/unity_minigame_host"
+                android:textColor="@color/white"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                android:layout_marginStart="16dp"
+                android:layout_marginBottom="24dp"
+                android:layout_gravity="bottom"/>
+
+            <LinearLayout
+                android:id="@+id/debugInfoContainer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_marginEnd="16dp"
+                android:layout_marginTop="24dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/serverUrlTv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="12sp"
+                    android:textColor="@color/black"
+                    android:layout_gravity="end"
+                    android:text="@string/default_server_domain">
+                </TextView>
+
+                <TextView
+                    android:id="@+id/orgNameTv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="12sp"
+                    android:textColor="@color/black"
+                    android:layout_gravity="end"
+                    android:text="@string/default_org_name">
+                </TextView>
+
+                <TextView
+                    android:id="@+id/runtimeSDKTv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="12sp"
+                    android:textColor="@color/black"
+                    android:layout_gravity="end"
+                    android:text="@string/default_runtime_sdk_version">
+                </TextView>
+            </LinearLayout>
+        </FrameLayout>
+
+        <!--        Recently Played-->
+        <LinearLayout
+            android:id="@+id/playedGames"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@color/played_games_bg_grey"
+            android:padding="16dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center">
+
+                <TextView
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/recently_played"
+                    android:textColor="@color/text_grey"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/moreTv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/more"
+                    android:textColor="@color/text_grey"
+                    android:textSize="12sp"
+                    android:drawablePadding="8dp"
+                    app:drawableRightCompat="@drawable/home_arrow" />
+            </LinearLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/playedGamesRv"
+                android:layout_marginTop="12dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:scrollbars="none" />
+        </LinearLayout>
+
+        <!--        Game List-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingTop="16dp"
+            android:paddingBottom="16dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:text="@string/all_games"
+                android:textColor="@color/text_grey"
+                android:textSize="12sp" >
+            </TextView>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/allGamesRv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clipToPadding="false"
+                android:nestedScrollingEnabled="false" />
+        </LinearLayout>
+    </LinearLayout>
+
+</androidx.core.widget.NestedScrollView>
