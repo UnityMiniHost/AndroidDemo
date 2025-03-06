@@ -25,6 +25,7 @@ import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 
+    public final static boolean isStaticHostAar = true;
     public static boolean isTJHostHandleInitialized = false;
     public static String v8LibPath;
     public static final int MAX_DYNAMIC_HOST_RETRY_COUNT = 3;
@@ -37,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
 
         initUI();
         initMultiProcessLauncher();
-        initDynamicHost();
+        initHost();
     }
 
     private void initUI() {
@@ -56,14 +57,31 @@ public class MainActivity extends AppCompatActivity {
     // Demo need to deliver Activity's process and class info registered in the AndroidManifest.xml
     // So that the MultiProcessLauncher in the Host Runtime SDK will determinate which Activity is
     // going to be used to launch a game.
+    // If we want the game always runs in the main process and uses the same default Task Stack like
+    // normal activities, we can delete "process" and "taskAffinity" fields in the AndroidManifest.xml.
+    // And in this case, we suppose that there's only one Activity for the game.
     private void initMultiProcessLauncher() {
         Map<String, Class<?>> map = new HashMap<>();
         map.put(":hostProc1", MultiProcHostContainerActivity1.class);
-        map.put(":hostProc2", MultiProcHostContainerActivity2.class);
-        map.put(":hostProc3", MultiProcHostContainerActivity3.class);
-        map.put(":hostProc4", MultiProcHostContainerActivity4.class);
-        map.put(":hostProc5", MultiProcHostContainerActivity5.class);
+//        map.put(":hostProc2", MultiProcHostContainerActivity2.class);
+//        map.put(":hostProc3", MultiProcHostContainerActivity3.class);
+//        map.put(":hostProc4", MultiProcHostContainerActivity4.class);
+//        map.put(":hostProc5", MultiProcHostContainerActivity5.class);
         MultiProcessLauncher.configContainer(map);
+    }
+
+    // We don't need to download so from Internet if we use static aar, and we can simply mark the
+    // isTJHostHandleInitialized flag to true;
+    private void initHost() {
+        if (isStaticHostAar) {
+            initStaticHost();
+        } else {
+            initDynamicHost();
+        }
+    }
+
+    private void initStaticHost() {
+        isTJHostHandleInitialized = true;
     }
 
     private void initDynamicHost() {
@@ -92,11 +110,11 @@ public class MainActivity extends AppCompatActivity {
                 isTJHostHandleInitialized = true;
             }
 
-            @Override
-            public void onDownloading(int progress) {
-                // update UI
-                Log.i("[MapleLeaf]", "initDynamicHost progress: " + progress);
-            }
+//            @Override
+//            public void onDownloading(int progress) {
+//                // update UI
+//                Log.i("[MapleLeaf]", "initDynamicHost progress: " + progress);
+//            }
 
             @Override
             public void onFailure(Throwable throwable) {

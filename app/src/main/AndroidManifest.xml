@@ -45,9 +45,7 @@
         </activity>
 
         <activity android:name=".host.MultiProcHostContainerActivity1"
-            android:launchMode="singleTask"
-            android:process=":hostProc1"
-            android:taskAffinity="com.u3d.appwithhostsdkdemo.host.affinity1">
+            android:launchMode="singleTask">
         </activity>
         <activity android:name=".host.MultiProcHostContainerActivity2"
             android:launchMode="singleTask"

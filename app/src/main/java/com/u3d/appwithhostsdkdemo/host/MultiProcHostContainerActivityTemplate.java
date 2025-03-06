@@ -1,5 +1,6 @@
 package com.u3d.appwithhostsdkdemo.host;
 
+import android.app.ActivityManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -24,6 +25,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.bytedance.applog.AppLog;
 import com.u3d.appwithhostsdkdemo.ILoginCallback;
 import com.u3d.appwithhostsdkdemo.ILoginServiceInterface;
+import com.u3d.appwithhostsdkdemo.MainActivity;
 import com.u3d.appwithhostsdkdemo.ad.AdManager;
 import com.u3d.appwithhostsdkdemo.R;
 import com.u3d.appwithhostsdkdemo.config.PropertiesManager;
@@ -82,7 +84,7 @@ public class MultiProcHostContainerActivityTemplate extends AppCompatActivity {
         initViews();
         initLoginServiceConnection();
         initTitle();
-        initDynamicLib();
+        initDynamicLibIfNeeded();
         initTJHostHandle();
     }
 
@@ -139,12 +141,21 @@ public class MultiProcHostContainerActivityTemplate extends AppCompatActivity {
 
     private void initTitle() {
         String dynamicTitle = getIntent().getStringExtra("title");
-        if (dynamicTitle != null) {
-            setTitle(dynamicTitle);
+        if (dynamicTitle == null) {
+            return;
         }
+
+        ActivityManager.TaskDescription taskDescription = new ActivityManager.TaskDescription(
+                dynamicTitle
+        );
+        setTaskDescription(taskDescription);
     }
 
-    private void initDynamicLib() {
+    private void initDynamicLibIfNeeded() {
+        if (MainActivity.isStaticHostAar) {
+            return;
+        }
+
         String nativeLibraryPath = getIntent().getStringExtra("v8LibPath");
         Log.i("[MapleLeaf]", "[MapleLeaf] DynamicLoadingSample nativeLibraryPath: " + nativeLibraryPath);
         boolean isLoaded = TJHost.isHostNativeLibraryLoaded(this);
