@@ -8,7 +8,7 @@
 |-------------------------------------|------------------------------------------|
 
 ## Clone Project
-   本项目使用了 Git LFS（Large File Storage）来管理大文件。在克隆项目之前，请确保你的开发环境已正确配置 Git LFS。
+   本项目使用了 Git LFS 来管理大文件。在克隆项目之前，请确保你的开发环境已正确配置 Git LFS。
 1. **安装 Git LFS**
 
    安装步骤可参考 [Install Git LFS](https://docs.github.com/en/repositories/working-with-files/managing-large-files/installing-git-large-file-storage)
@@ -21,12 +21,16 @@
    git lfs install
 
 3. **克隆项目**
+   
    使用 git clone 命令克隆项目。Git LFS 会自动处理项目中的大文件：
+   
    ```bash
    git clone git@github.com:UnityMiniHost/AndroidDemo.git
 
-4. **验证 LFS 文件**
+5. **验证 LFS 文件**
+   
    克隆完成后，你可以运行以下命令以确保所有 LFS 文件已正确下载：
+   
    ```bash
    git lfs pull
 
