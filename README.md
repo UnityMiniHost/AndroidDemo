@@ -13,26 +13,22 @@
 
    安装步骤可参考 [Install Git LFS](https://docs.github.com/en/repositories/working-with-files/managing-large-files/installing-git-large-file-storage)
 
-2. **初始化 Git LFS**
+2. **克隆项目**
 
-   安装完成后，在命令行中运行以下命令以初始化 Git LFS：
+   安装完成后，在命令行中运行以下命令以初始化 Git LFS，拉取项目以并确保所有 LFS 文件已正确下载：
 
    ```bash
    git lfs install
-
-3. **克隆项目**
-   
-   使用 git clone 命令克隆项目。Git LFS 会自动处理项目中的大文件：
-   
-   ```bash
    git clone git@github.com:UnityMiniHost/AndroidDemo.git
-
-5. **验证 LFS 文件**
-   
-   克隆完成后，你可以运行以下命令以确保所有 LFS 文件已正确下载：
-   
-   ```bash
    git lfs pull
+   
+## Branches Overview
+
+   
+
+- **main**：此分支使用动态 aar，对包体大小影响较小，能在需要时从 CDN 动态加载所需的 so 库。同时每个游戏运行在单独进程，最大运行游戏进程数可配置。
+
+- **static-aar**：此分支使用静态 aar，游戏运行在主进程，不推荐此类实现，仅提供使用示例。
 
 ## Issue
    如果您在测试和使用 Demo 项目中遇到任何您认为不符合预期的行为，或发现代码中任何不合理的实现，请提交 Issue 反馈。🥹
