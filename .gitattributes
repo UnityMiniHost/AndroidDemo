@@ -1,1 +1,2 @@
 host-runtime-release.aar filter=lfs diff=lfs merge=lfs -text
+preview/* filter=lfs diff=lfs merge=lfs -text
