@@ -3,7 +3,7 @@ name: Build and Release APK
 on:
   push:
     tags:
-      - 'v*.*.*'
+      - 'v*.*.*-*'
 
 jobs:
   build:
@@ -50,4 +50,4 @@ jobs:
         body: |
           Automated release of debug APK.
         tag: ${{ github.ref_name }}
-        name: Release ${{ github.ref_name }}
+        name: Unity MiniHost Android Demo ${{ github.ref_name }}
