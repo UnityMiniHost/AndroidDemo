@@ -1,6 +1,6 @@
 # Unity MiniHost Android Demo
 
-欢迎访问我们的项目！本项目是 [Unity 小游戏宿主 SDK](https://minihost.tuanjie.cn/) 的 Android 示例项目，项目参照小游戏宿主 SDK [Android 快速集成文档](https://minihost.tuanjie.cn/help/docs/sdk/android/quick_integrate)提供了简单的游戏启动及平台能力接入示例。
+欢迎访问我们的项目！本项目是 [Unity 小游戏宿主 SDK](https://minihost.tuanjie.cn/) 的 Android 示例项目，项目参照小游戏宿主 SDK [Android 快速集成文档](https://minihost.tuanjie.cn/help/docs/sdk/android/quick-integrate) 提供了简单的游戏启动及平台能力接入示例。
 
 ## Preview
 
