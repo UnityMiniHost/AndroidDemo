@@ -55,45 +55,16 @@
                 android:layout_marginBottom="24dp"
                 android:layout_gravity="bottom"/>
 
-            <LinearLayout
-                android:id="@+id/debugInfoContainer"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end"
+            <ImageView
+                android:id="@+id/settingIv"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_gravity="top|end"
                 android:layout_marginEnd="16dp"
                 android:layout_marginTop="24dp"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/serverUrlTv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="12sp"
-                    android:textColor="@color/black"
-                    android:layout_gravity="end"
-                    android:text="@string/default_server_domain">
-                </TextView>
-
-                <TextView
-                    android:id="@+id/orgNameTv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="12sp"
-                    android:textColor="@color/black"
-                    android:layout_gravity="end"
-                    android:text="@string/default_org_name">
-                </TextView>
-
-                <TextView
-                    android:id="@+id/runtimeSDKTv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="12sp"
-                    android:textColor="@color/black"
-                    android:layout_gravity="end"
-                    android:text="@string/default_runtime_sdk_version">
-                </TextView>
-            </LinearLayout>
+                android:contentDescription="@string/setting"
+                android:src="@drawable/home_setting">
+            </ImageView>
         </FrameLayout>
 
         <!--        Recently Played-->

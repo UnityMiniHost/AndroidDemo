@@ -9,7 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -18,17 +18,18 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.u3d.appwithhostsdkdemo.MainActivity;
-import com.u3d.appwithhostsdkdemo.config.PropertiesManager;
 import com.u3d.appwithhostsdkdemo.R;
-import com.u3d.appwithhostsdkdemo.home.model.GameModel;
-import com.u3d.appwithhostsdkdemo.home.service.GameService;
-import com.u3d.appwithhostsdkdemo.home.ui.HorizontalGameListAdapter;
-import com.u3d.appwithhostsdkdemo.home.ui.HorizontalGameListItemDecoration;
-import com.u3d.appwithhostsdkdemo.home.ui.VerticalGameListAdapter;
-import com.u3d.appwithhostsdkdemo.home.util.GamePreferencesUtil;
+import com.u3d.appwithhostsdkdemo.config.PropertiesManager;
+import com.u3d.appwithhostsdkdemo.home.http.GameService;
+import com.u3d.appwithhostsdkdemo.home.ui.HorizontalHistoryAdapter;
+import com.u3d.appwithhostsdkdemo.home.ui.HorizontalHistoryItemDecoration;
+import com.u3d.appwithhostsdkdemo.home.ui.SettingModal;
+import com.u3d.appwithhostsdkdemo.home.ui.VerticalGameAdapter;
+import com.u3d.appwithhostsdkdemo.recentlyPlayed.HistoryManager;
 import com.u3d.appwithhostsdkdemo.recentlyPlayed.PlayedGamesActivity;
 import com.u3d.appwithhostsdkdemo.util.UIUtils;
-import com.u3d.webglhost.toolkit.TJHostHandle;
+import com.u3d.webglhost.toolkit.data.history.HistoryModel;
+import com.u3d.webglhost.toolkit.model.GameModel;
 import com.u3d.webglhost.toolkit.multiproc.MultiProcessLauncher;
 
 import java.util.ArrayList;
@@ -38,12 +39,10 @@ public class HomeFragment extends Fragment {
 
     private View mRootView;
     private View playedGamesSection;
-    private HorizontalGameListAdapter playedGameListAdapter;
-    private VerticalGameListAdapter verticalGameListAdapter;
+    private HorizontalHistoryAdapter playedGameListAdapter;
+    private VerticalGameAdapter verticalGameListAdapter;
     private List<GameModel> allGames;
-
     private final Handler handler = new Handler(Looper.getMainLooper()); // Get main thread handler to Update UI
-
     private boolean isLoadingAllGames = false;
 
     @Override
@@ -56,20 +55,14 @@ public class HomeFragment extends Fragment {
                 ((ViewGroup) mRootView.getParent()).removeView(mRootView);
             }
         }
+
         return mRootView;
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-
-        // loadData();
     }
 
     private void initUI(View view) {
         initPlayedGames(view);
         initAllGames(view);
-        initDebugInfo(view);
+        initSetting(view);
     }
 
     private void initPlayedGames(View view) {
@@ -83,24 +76,23 @@ public class HomeFragment extends Fragment {
 
         RecyclerView playedGamesRv = view.findViewById(R.id.playedGamesRv);
         playedGamesRv.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
-        playedGamesRv.addItemDecoration(new HorizontalGameListItemDecoration(UIUtils.dpToPx(getContext(), 24)));
+        playedGamesRv.addItemDecoration(new HorizontalHistoryItemDecoration(UIUtils.dpToPx(getContext(), 24)));
 
-        playedGameListAdapter = new HorizontalGameListAdapter(getContext(), new ArrayList<>());
-        playedGameListAdapter.setOnItemClickListener(this::startGameAndUpdatePlayedHistory);
+        playedGameListAdapter = new HorizontalHistoryAdapter(getContext(), new ArrayList<>());
+        playedGameListAdapter.setOnItemClickListener((history) -> startGame(history.getLaunchKey(), history.getName()));
         playedGamesRv.setAdapter(playedGameListAdapter);
 
-        updatePlayedGames();
+        updatePlayedHistory();
     }
 
-    private void updatePlayedGames() {
+    private void updatePlayedHistory() {
         handler.post(() -> {
             if (getContext() == null) {
                 return;
             }
-
-            List<GameModel> playedGames = GamePreferencesUtil.readPlayedGames(getContext());
-            playedGameListAdapter.updateGamesModels(playedGames);
-            playedGamesSection.setVisibility(playedGames.isEmpty() ? View.GONE : View.VISIBLE);
+            List<HistoryModel> history = HistoryManager.readPlayedHistory();
+            playedGameListAdapter.updateHistory(history);
+            playedGamesSection.setVisibility(history.isEmpty() ? View.GONE : View.VISIBLE);
         });
     }
 
@@ -113,8 +105,8 @@ public class HomeFragment extends Fragment {
         allGamesRv.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
 
         allGames = new ArrayList<>();
-        verticalGameListAdapter = new VerticalGameListAdapter(getContext(), allGames);
-        verticalGameListAdapter.setOnItemClickListener(this::startGameAndUpdatePlayedHistory);
+        verticalGameListAdapter = new VerticalGameAdapter(getContext(), allGames);
+        verticalGameListAdapter.setOnItemClickListener((game) -> startGame(game.getLaunchKey(), game.getName()));
 
         allGamesRv.setAdapter(verticalGameListAdapter);
 
@@ -134,7 +126,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void onSuccess(List<GameModel> list) {
                 allGames = list;
-                handler.post(() -> verticalGameListAdapter.updateGamesModels(list));
+                handler.post(() -> verticalGameListAdapter.updateHistory(list));
                 isLoadingAllGames = false;
             }
 
@@ -146,20 +138,7 @@ public class HomeFragment extends Fragment {
         });
     }
 
-    private void initDebugInfo(View view) {
-        View debugInfoContainer = view.findViewById(R.id.debugInfoContainer);
-        TextView serverUrlTv = view.findViewById(R.id.serverUrlTv);
-        TextView orgNameTv = view.findViewById(R.id.orgNameTv);
-        TextView runtimeSDKTv = view.findViewById(R.id.runtimeSDKTv);
-
-        PropertiesManager p = PropertiesManager.getInstance();
-        debugInfoContainer.setVisibility(View.VISIBLE);
-        serverUrlTv.setText(p.getProperty("app.host.server.domain"));
-        orgNameTv.setText(p.getProperty("app.org.name"));
-        runtimeSDKTv.setText(TJHostHandle.getCommitId());
-    }
-
-    private void startGameAndUpdatePlayedHistory(GameModel model) {
+    private void startGame(String launchKey, String title) {
         Context context = getContext();
         if (context == null) {
             Log.e("HomeFragment", "Failed to getContext() in startGameAndUpdatePlayedHistory()");
@@ -172,14 +151,30 @@ public class HomeFragment extends Fragment {
             return;
         }
 
-        GamePreferencesUtil.savePlayedGames(getContext(), model);
-        updatePlayedGames();
+        if (launchKey == null || launchKey.isEmpty()) {
+            Log.e("HomeFragment", "launchKey is null or empty!");
+            return;
+        }
 
-        Log.i("MultiProcess", "gameId: " + model.getId() + " title: " + model.getName());
-        MultiProcessLauncher.launch(context, model.getId(), intent -> {
+        Log.i("MultiProcess", "launchKey: " + launchKey + " title: " + title);
+        MultiProcessLauncher.launch(context, launchKey, intent -> {
             intent.putExtra("v8LibPath", MainActivity.v8LibPath);
             intent.putExtra("isTempSession", false);
-            intent.putExtra("title", model.getName());
+            intent.putExtra("title", title);
         });
+    }
+
+    private void initSetting(View view) {
+        ImageView settingIv = view.findViewById(R.id.settingIv);
+        settingIv.setOnClickListener(v -> {
+            SettingModal dialogFragment = new SettingModal();
+            dialogFragment.show(getChildFragmentManager(), "customDialog");
+        });
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        updatePlayedHistory();
     }
 }

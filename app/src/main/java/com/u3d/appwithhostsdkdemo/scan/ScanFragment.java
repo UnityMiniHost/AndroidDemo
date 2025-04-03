@@ -6,6 +6,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -62,6 +63,13 @@ public class ScanFragment extends Fragment {
             }
 
             downloadUrlEt.setText(downloadUrl);
+
+            if (!MainActivity.isTJHostHandleInitialized) {
+                Log.e("HomeFragment", "TJHostHandle is not initialized!");
+                Toast.makeText(activity, "TJHostHandle is not initialized!", Toast.LENGTH_SHORT).show();
+                barcodeView.resume();
+                return;
+            }
 
             MultiProcessLauncher.launch(activity, downloadUrl, intent -> {
                 intent.putExtra("v8LibPath", MainActivity.v8LibPath);
