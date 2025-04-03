@@ -24,6 +24,9 @@ public class PropertiesManager {
     }
 
     public static PropertiesManager getInstance() {
+        if (instance == null) {
+            throw new RuntimeException("PropertiesManager is not initialized");
+        }
         return instance;
     }
 

@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/maskView"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:gravity="center">
+
+    <com.u3d.appwithhostsdkdemo.home.ui.RoundedLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="24dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginEnd="40dp"
+        android:background="@color/white"
+        app:cornerRadius="16dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:text="@string/version_info"
+                android:layout_marginBottom="8dp">
+            </TextView>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_width="60dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="24dp"
+                    android:text="@string/server"
+                    android:textSize="12sp">
+                </TextView>
+
+                <TextView
+                    android:id="@+id/serverUrlTv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="12sp"
+                    android:textColor="@color/black"
+                    android:text="@string/default_server_domain"
+                    android:gravity="end">
+                </TextView>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_width="60dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="24dp"
+                    android:text="@string/org"
+                    android:textSize="12sp">
+                </TextView>
+
+                <TextView
+                    android:id="@+id/orgNameTv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:maxWidth="120dp"
+                    android:textSize="12sp"
+                    android:textColor="@color/black"
+                    android:text="@string/default_org_name"
+                    android:gravity="end">
+                </TextView>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_width="60dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="24dp"
+                    android:text="@string/sdk"
+                    android:textSize="12sp">
+                </TextView>
+
+                <TextView
+                    android:id="@+id/runtimeSDKTv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="12sp"
+                    android:textColor="@color/black"
+                    android:text="@string/default_runtime_sdk_version"
+                    android:gravity="end">
+                </TextView>
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="8dp"
+                android:textSize="14sp"
+                android:text="@string/auth_info">
+            </TextView>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_width="60dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/code"
+                    android:textSize="12sp"
+                    android:layout_marginEnd="24dp">
+                </TextView>
+
+                <EditText
+                    android:id="@+id/userIdEt"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:autofillHints="@string/default_mock_code"
+                    android:inputType="text"
+                    android:textSize="12sp"
+                    android:hint="@string/hint_code"
+                    android:textColor="@color/black"
+                    android:gravity="end">
+                </EditText>
+            </LinearLayout>
+        </LinearLayout>
+    </com.u3d.appwithhostsdkdemo.home.ui.RoundedLayout>
+
+</LinearLayout>

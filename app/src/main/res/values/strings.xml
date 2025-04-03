@@ -25,4 +25,18 @@
     <string name="default_server_domain">Default Server Domain</string>
     <string name="default_org_name">Default Org Name</string>
     <string name="default_runtime_sdk_version">Default Runtime SDK Version</string>
+    <string name="setting">setting</string>
+    <string name="version_info">Version Info:</string>
+    <string name="auth_info">Auth Info:</string>
+    <string name="default_mock_code">000000-000000-000000-000000</string>
+    <string name="hint_code">Code</string>
+    <string name="server">Server:</string>
+    <string name="sdk">SDK:</string>
+    <string name="code">Code:</string>
+    <string name="org">Org:</string>
+    <string name="reward_ad_material">Reward Ad Material</string>
+    <string name="reward_countdown">还剩 Ns 获得奖励</string>
+    <string name="non_gaming_areas">Non-gaming areas</string>
+    <string name="gaming_area_background">Gaming area background</string>
+    <string name="diy_button">DIY Button</string>
 </resources>

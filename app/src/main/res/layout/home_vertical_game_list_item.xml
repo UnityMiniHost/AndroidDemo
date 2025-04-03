@@ -23,7 +23,6 @@
             android:layout_height="64dp"
             android:scaleType="fitXY"
             android:contentDescription="@string/game_badge"
-            android:foreground="@drawable/home_border"
             android:background="@drawable/home_game_default_icon">
         </ImageView>
     </com.u3d.appwithhostsdkdemo.home.ui.RoundedLayout>

@@ -6,6 +6,7 @@
 
 | ![First GIF](preview/open_game.gif) | ![Second GIF](preview/multi_process.gif) |
 |-------------------------------------|------------------------------------------|
+|             启动游戏                 |                多进程游戏                 |
 
 ## Clone Project
    本项目使用了 Git LFS 来管理大文件。在克隆项目之前，请确保你的开发环境已正确配置 Git LFS。

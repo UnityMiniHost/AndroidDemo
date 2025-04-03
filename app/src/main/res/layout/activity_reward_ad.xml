@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <ImageView
+        android:id="@+id/adIv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:contentDescription="@string/reward_ad_material">
+    </ImageView>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_gravity="end">
+        <com.u3d.webglhost.toolkit.ui.RoundedLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp"
+            android:paddingTop="6dp"
+            android:paddingBottom="6dp"
+            android:layout_marginEnd="12dp"
+            android:background="@color/capsule_background"
+            app:cornerRadius="16dp">
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_gravity="center">
+
+                <TextView
+                    android:id="@+id/timeTv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/reward_countdown">
+                </TextView>
+            </LinearLayout>
+        </com.u3d.webglhost.toolkit.ui.RoundedLayout>
+
+        <com.u3d.webglhost.toolkit.ui.RoundedLayout
+            android:id="@+id/closeIv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingStart="6dp"
+            android:paddingEnd="6dp"
+            android:paddingTop="6dp"
+            android:paddingBottom="6dp"
+            android:background="@color/capsule_background"
+            app:cornerRadius="16dp"
+            android:gravity="center">
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:contentDescription="@string/splash_capsule_close_button"
+                    android:src="@drawable/splash_capsule_close"
+                    android:scaleType="center">
+                </ImageView>
+        </com.u3d.webglhost.toolkit.ui.RoundedLayout>
+    </LinearLayout>
+
+
+</FrameLayout>

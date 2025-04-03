@@ -27,6 +27,8 @@ public class AdManager {
     private WMRewardAd rewardVideoAd;
     private boolean rewardVideoAdShouldSendReward = false;
 
+    private boolean isLoadInStart = false;
+
     public void initAds(TJHostHandle hostHandle) {
         setUpSharedAdsConfig();
         initRewardAd(hostHandle);
@@ -59,6 +61,11 @@ public class AdManager {
                     return;
                 }
                 hostHandle.runCustomScript(script, bundle -> Log.i("AdManager", "onVideoAdLoadSuccess rewardedVideoLoadCallbackFromJava end"));
+
+                if (isLoadInStart) {
+                    showAdIfNeeded();
+                    isLoadInStart = false;
+                }
             }
 
             @Override
@@ -126,11 +133,22 @@ public class AdManager {
             return;
         }
 
+        if (!rewardVideoAd.isReady()) {
+            isLoadInStart = true;
+            rewardVideoAd.loadAd();
+        }
+
+        showAdIfNeeded();
+    }
+
+    private void showAdIfNeeded() {
         if (rewardVideoAd != null && rewardVideoAd.isReady()) {
             HashMap<String, String> option = new HashMap<>();
             option.put(WMConstants.AD_SCENE_ID, "Demo_App_Id");
             option.put(WMConstants.AD_SCENE_DESC, "Demo_App_Scene");
             rewardVideoAd.show((Activity) mContext, option);
+        } else {
+            Log.e("AdManager", "showAdIfPossible failed");
         }
     }
 }

@@ -118,7 +118,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Throwable throwable) {
-                Log.i("[MapleLeaf]", "initDynamicHost failed: " + throwable.getMessage());
+                Log.e("[MapleLeaf]", "initDynamicHost failed: " + throwable.getMessage());
                 Toast.makeText(MainActivity.this, "initDynamicHost failed: " + throwable.getMessage(), Toast.LENGTH_LONG).show();
                 isTJHostHandleInitialized = false;
 

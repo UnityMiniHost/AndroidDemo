@@ -7,6 +7,8 @@ import com.bytedance.applog.AppLog;
 import com.bytedance.applog.InitConfig;
 import com.bytedance.applog.UriConfig;
 import com.u3d.appwithhostsdkdemo.config.PropertiesManager;
+import com.u3d.appwithhostsdkdemo.mockAd.sdk.RewardAdManager;
+import com.u3d.appwithhostsdkdemo.util.SharedPreferencesManager;
 
 import org.json.JSONObject;
 
@@ -15,12 +17,14 @@ public class MainApplication extends Application {
     public void onCreate() {
         super.onCreate();
 
-        initProperties();
+        initComponents();
 //        initDataFinderSDK(); // Initialize if needed
+        initMockAdSDK();
     }
 
-    private void initProperties() {
+    private void initComponents() {
         PropertiesManager.init(this);
+        SharedPreferencesManager.init(this);
     }
 
     private void initDataFinderSDK() {
@@ -39,5 +43,9 @@ public class MainApplication extends Application {
         JSONObject params = new JSONObject();
         AppLog.onEventV3("app_on_create", params);
         Log.d("HostApplication", "onEventV3 app_on_create event");
+    }
+
+    private void initMockAdSDK() {
+        RewardAdManager.getInstance().init(this);
     }
 }

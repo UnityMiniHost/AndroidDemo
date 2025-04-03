@@ -1,11 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/nonGamingArea"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:gravity="center"
+        android:background="@color/text_light_grey"
+        android:text="@string/non_gaming_areas"
+        android:textSize="16sp"
+        android:textColor="@color/black"
+        android:visibility="gone">
+    </TextView>
 
     <FrameLayout
-        android:id="@+id/game_container"
+        android:id="@+id/gameContainer"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent">
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/diy_button"
+            android:layout_gravity="end|top"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="20dp"
+            android:visibility="gone">
+        </Button>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <TextView
+            android:layout_margin="40dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:background="@color/text_light_grey"
+            android:text="@string/gaming_area_background"
+            android:textSize="16sp"
+            android:textColor="@color/black"
+            android:visibility="gone">
+        </TextView>
+    </FrameLayout>
+</LinearLayout>
