@@ -10,18 +10,9 @@ import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.NavigationUI;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.u3d.appwithhostsdkdemo.host.MultiProcHostContainerActivity1;
-import com.u3d.appwithhostsdkdemo.host.MultiProcHostContainerActivity2;
-import com.u3d.appwithhostsdkdemo.host.MultiProcHostContainerActivity3;
-import com.u3d.appwithhostsdkdemo.host.MultiProcHostContainerActivity4;
-import com.u3d.appwithhostsdkdemo.host.MultiProcHostContainerActivity5;
 import com.u3d.webglhost.dynamicres.TJDynamicConfig;
 import com.u3d.webglhost.dynamicres.shared.OnLoadSharedLibraryListener;
 import com.u3d.webglhost.runtime.TJHost;
-import com.u3d.webglhost.toolkit.multiproc.MultiProcessLauncher;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -37,7 +28,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         initUI();
-        initMultiProcessLauncher();
         initHost();
     }
 
@@ -52,22 +42,6 @@ public class MainActivity extends AppCompatActivity {
 
         BottomNavigationView bottomNav = findViewById(R.id.bottomNavigation);
         NavigationUI.setupWithNavController(bottomNav, navController);
-    }
-
-    // Demo need to deliver Activity's process and class info registered in the AndroidManifest.xml
-    // So that the MultiProcessLauncher in the Host Runtime SDK will determinate which Activity is
-    // going to be used to launch a game.
-    // If we want the game always runs in the main process and uses the same default Task Stack like
-    // normal activities, we can delete "process" and "taskAffinity" fields in the AndroidManifest.xml.
-    // And in this case, we suppose that there's only one Activity for the game.
-    private void initMultiProcessLauncher() {
-        Map<String, Class<?>> map = new HashMap<>();
-        map.put(":hostProc1", MultiProcHostContainerActivity1.class);
-//        map.put(":hostProc2", MultiProcHostContainerActivity2.class);
-//        map.put(":hostProc3", MultiProcHostContainerActivity3.class);
-//        map.put(":hostProc4", MultiProcHostContainerActivity4.class);
-//        map.put(":hostProc5", MultiProcHostContainerActivity5.class);
-        MultiProcessLauncher.configContainer(map);
     }
 
     // We don't need to download so from Internet if we use static aar, and we can simply mark the

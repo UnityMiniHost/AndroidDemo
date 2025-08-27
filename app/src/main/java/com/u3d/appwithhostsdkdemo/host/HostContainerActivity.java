@@ -47,7 +47,6 @@ import com.u3d.webglhost.toolkit.listener.OnTJHostCreateHandleListener;
 import com.u3d.webglhost.toolkit.listener.OnTJHostGamePackageDownloadHandleListener;
 import com.u3d.webglhost.toolkit.listener.OnTJHostHandleInitializeListener;
 import com.u3d.webglhost.toolkit.listener.OnTJHostHandleListener;
-import com.u3d.webglhost.toolkit.multiproc.MultiProcessLauncher;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -61,8 +60,8 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.Objects;
 
-public class MultiProcHostContainerActivityTemplate extends AppCompatActivity {
-    private static final String TAG = "[MultiProcHostContainerActivityTemplate]";
+public class HostContainerActivity extends AppCompatActivity {
+    private static final String TAG = "[HostContainerActivity]";
     AdManager adManager;
     MockAdManager mockAdManager;
     private Object mTag;
@@ -77,8 +76,6 @@ public class MultiProcHostContainerActivityTemplate extends AppCompatActivity {
     private ServiceConnection loginServiceConnection;
     // History Saver
     private DemoHistorySaver historySaver;
-    // Host Life Cycle
-    MultiProcessLauncher.MiniGameLifeCycle gameLifeCycle;
     // UI Handler
     private final Handler handler = new Handler(Looper.getMainLooper());
 
@@ -89,19 +86,11 @@ public class MultiProcHostContainerActivityTemplate extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        initLifeCycleObserver();
         initViews();
         initLoginServiceConnection();
         initTitle();
         initDynamicLibIfNeeded();
         initTJHostHandle();
-    }
-
-    private void initLifeCycleObserver() {
-        launchKey = getIntent().getStringExtra("gameId");
-        Log.i("MultiProcess", "launchKey: " + launchKey);
-        gameLifeCycle = new MultiProcessLauncher.MiniGameLifeCycle(this, launchKey);
-        getLifecycle().addObserver(gameLifeCycle);
     }
 
     private void initViews() {
@@ -151,8 +140,7 @@ public class MultiProcHostContainerActivityTemplate extends AppCompatActivity {
         }
 
         ActivityManager.TaskDescription taskDescription = new ActivityManager.TaskDescription(
-                dynamicTitle
-        );
+                dynamicTitle);
         setTaskDescription(taskDescription);
     }
 
@@ -164,30 +152,35 @@ public class MultiProcHostContainerActivityTemplate extends AppCompatActivity {
         String nativeLibraryPath = getIntent().getStringExtra("v8LibPath");
         Log.i("[MapleLeaf]", "[MapleLeaf] DynamicLoadingSample nativeLibraryPath: " + nativeLibraryPath);
         boolean isLoaded = TJHost.isHostNativeLibraryLoaded(this);
-        Log.i("[MapleLeaf]", "[MapleLeaf] Sample before calling installNativeLibraryPath, isHostNativeLibraryLoaded=" + isLoaded);
+        Log.i("[MapleLeaf]",
+                "[MapleLeaf] Sample before calling installNativeLibraryPath, isHostNativeLibraryLoaded=" + isLoaded);
         boolean result = TJHost.installNativeLibraryPath(getApplicationContext(), nativeLibraryPath);
         Log.i("[MapleLeaf]", "[MapleLeaf] DynamicLoadingSample installNativeLibraryPath result=" + result);
         isLoaded = TJHost.isHostNativeLibraryLoaded(this);
-        Log.i("[MapleLeaf]", "[MapleLeaf] DynamicLoadingSample after calling installNativeLibraryPath isHostNativeLibraryLoaded=" + isLoaded);
+        Log.i("[MapleLeaf]",
+                "[MapleLeaf] DynamicLoadingSample after calling installNativeLibraryPath isHostNativeLibraryLoaded="
+                        + isLoaded);
     }
 
     private void initTJHostHandle() {
-        // TODO we should not Initialize again in the MultiProcHostContainerActivity, we can init at MainActivity and deliver a host session id into here
         Context context = this;
         PropertiesManager.init(context);
         PropertiesManager p = PropertiesManager.getInstance();
-        TJHostHandle.initialize(context, p.getProperty("app.key"), p.getProperty("app.secret"), gameContainer, new OnTJHostHandleInitializeListener() {
-            @Override
-            public void onSuccess(TJHostHandle hostHandle) {
-                handler.post(() -> initGame());
-            }
+        TJHostHandle.initialize(context, p.getProperty("app.key"), p.getProperty("app.secret"), gameContainer,
+                new OnTJHostHandleInitializeListener() {
+                    @Override
+                    public void onSuccess(TJHostHandle hostHandle) {
+                        handler.post(() -> initGame());
+                    }
 
-            @Override
-            public void onFailure(Throwable throwable) {
-                handler.post(() -> Toast.makeText(context, "TJHostHandle.initialize failed: " + throwable.getMessage(), Toast.LENGTH_SHORT).show());
-//                finishAndRemoveTask();
-            }
-        });
+                    @Override
+                    public void onFailure(Throwable throwable) {
+                        handler.post(() -> Toast.makeText(context,
+                                "TJHostHandle.initialize failed: " + throwable.getMessage(), Toast.LENGTH_SHORT)
+                                .show());
+                        // finishAndRemoveTask();
+                    }
+                });
     }
 
     private void initGame() {
@@ -197,7 +190,8 @@ public class MultiProcHostContainerActivityTemplate extends AppCompatActivity {
         // Set WebView Directory Suffix, processes must use different data directories
         WebViewCompat.setDataDirectorySuffix(this);
 
-        // Set createGameHandle option, options can be referred in the API Reference manual
+        // Set createGameHandle option, options can be referred in the API Reference
+        // manual
         Bundle hostBundle = new Bundle();
         hostBundle.putString(TJConstants.HTTP_CACHE_PATH, getDefaultCachePath());
         hostBundle.putLong(TJConstants.HOST_PAUSE_DELAY_MILLIS, 100);
@@ -251,19 +245,21 @@ public class MultiProcHostContainerActivityTemplate extends AppCompatActivity {
         bundle.putBoolean(TJConstants.ENABLE_CPU_PROFILER, true);
         bundle.putBoolean(TJConstants.ENABLE_CSHARP_DEBUGGER, true);
         bundle.putLong(TJConstants.NETWORK_TIMEOUT, 60000);
-        bundle.putString(TJConstants.BUILTIN_CUSTOM_SCRIPTS_PATH, "customScripts"); // used to override some js API in Host SDK
+        bundle.putString(TJConstants.BUILTIN_CUSTOM_SCRIPTS_PATH, "customScripts"); // used to override some js API in
+                                                                                    // Host SDK
 
         bundle.putBoolean(TJRuntimeConstants.SHOW_MENU_EXPLORE_BTN, true);
         bundle.putBoolean(TJRuntimeConstants.SPLASH_CAPSULE_RESERVE_STATUS_BAR, true);
-//        bundle.putBoolean(TJConstants.ENABLE_TRANSPARENT_MODE, true);
-//        bundle.putString(TJRuntimeConstants.SPLASH_ICON_URL, "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTOuxrvcNMfGLh73uKP1QqYpKoCB0JLXiBMvA&s");
-//        bundle.putString(TJRuntimeConstants.SPLASH_GAME_TITLE, "外部传入的 Title");
-//        bundle.putBoolean(TJConstants.ENABLE_INSPECTOR, true);
-//        bundle.putBoolean(TJConstants.INSPECTOR_WAIT_FOR_INSPECT, false);
-//        bundle.putString(TJConstants.INSPECTOR_HOST, "127.0.0.1");
-//        bundle.putInt(TJConstants.INSPECTOR_PORT, 9229);
-//        bundle.putFloat(TJConstants.PIXEL_RATIO, 1.0f);
-//        bundle.putString(TJConstants.GAME_ENTRY_JS, "customEntry.js");
+        // bundle.putBoolean(TJConstants.ENABLE_TRANSPARENT_MODE, true);
+        // bundle.putString(TJRuntimeConstants.SPLASH_ICON_URL,
+        // "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTOuxrvcNMfGLh73uKP1QqYpKoCB0JLXiBMvA&s");
+        // bundle.putString(TJRuntimeConstants.SPLASH_GAME_TITLE, "外部传入的 Title");
+        // bundle.putBoolean(TJConstants.ENABLE_INSPECTOR, true);
+        // bundle.putBoolean(TJConstants.INSPECTOR_WAIT_FOR_INSPECT, false);
+        // bundle.putString(TJConstants.INSPECTOR_HOST, "127.0.0.1");
+        // bundle.putInt(TJConstants.INSPECTOR_PORT, 9229);
+        // bundle.putFloat(TJConstants.PIXEL_RATIO, 1.0f);
+        // bundle.putString(TJConstants.GAME_ENTRY_JS, "customEntry.js");
 
         SimpleDateFormat tempDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String datetime = tempDate.format(new java.util.Date());
@@ -326,9 +322,11 @@ public class MultiProcHostContainerActivityTemplate extends AppCompatActivity {
     }
 
     private void playGame() {
-//        mockMiniGameCallRewardedAdAPI(this); // Mock a game is calling create rewarded Ads APIs
-//        mockMiniGameCallUIAPI(this); // Mock a game is calling ui APIs
-//        mockMiniGameCallOptionsAPI(this); // Mock a game is calling launch options APIs
+        // mockMiniGameCallRewardedAdAPI(this); // Mock a game is calling create
+        // rewarded Ads APIs
+        // mockMiniGameCallUIAPI(this); // Mock a game is calling ui APIs
+        // mockMiniGameCallOptionsAPI(this); // Mock a game is calling launch options
+        // APIs
 
         resumeGame();
     }
@@ -341,7 +339,8 @@ public class MultiProcHostContainerActivityTemplate extends AppCompatActivity {
     }
 
     private void pauseGame() {
-        if (hostHandle == null) return;
+        if (hostHandle == null)
+            return;
         hostHandle.pause(new OnTJHostHandleListener() {
             @Override
             public void onSuccess() {
@@ -358,8 +357,10 @@ public class MultiProcHostContainerActivityTemplate extends AppCompatActivity {
     }
 
     private void resumeGame() {
-        if (hostHandle == null) return;
-        if (!isGameStarted) return;
+        if (hostHandle == null)
+            return;
+        if (!isGameStarted)
+            return;
 
         Log.i(TAG, "MiniGameLaunchOption");
 
@@ -381,7 +382,6 @@ public class MultiProcHostContainerActivityTemplate extends AppCompatActivity {
         });
     }
 
-
     // If this game is resumed from the background
     private void addEnterOptions() {
         SimpleDateFormat tempDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -396,7 +396,8 @@ public class MultiProcHostContainerActivityTemplate extends AppCompatActivity {
     }
 
     private void stopGame() {
-        if (hostHandle == null) return;
+        if (hostHandle == null)
+            return;
         hostHandle.stop("", new OnTJHostHandleListener() {
             @Override
             public void onSuccess() {
@@ -442,8 +443,6 @@ public class MultiProcHostContainerActivityTemplate extends AppCompatActivity {
         historySaver.destroy();
 
         Log.i("HostSample", "-------- ending of host sample --------");
-
-        getLifecycle().removeObserver(gameLifeCycle);
     }
 
     private void removeHostAndShowOptions() {
@@ -455,7 +454,8 @@ public class MultiProcHostContainerActivityTemplate extends AppCompatActivity {
         }
     }
 
-    // These listeners must be set after HostHandle.createGameHandle() finishes successfully,
+    // These listeners must be set after HostHandle.createGameHandle() finishes
+    // successfully,
     // which initializes the GameHandle.
     private void setGameHandleListeners() {
         // The default action is to open a debug menu
@@ -464,7 +464,7 @@ public class MultiProcHostContainerActivityTemplate extends AppCompatActivity {
         // The default action is to do nothing
         hostHandle.setOnTJCloseListener(view -> {
             showToast("Click Close button");
-//            finishAndRemoveTask();
+            // finishAndRemoveTask();
             onBackPressed();
         });
 
@@ -479,7 +479,7 @@ public class MultiProcHostContainerActivityTemplate extends AppCompatActivity {
         hostHandle.setOnGamePackageDownloadListener(new OnTJHostGamePackageDownloadHandleListener() {
 
             @Override
-            public void onStart(){
+            public void onStart() {
                 showToast("Game package download start");
             }
 
@@ -538,15 +538,17 @@ public class MultiProcHostContainerActivityTemplate extends AppCompatActivity {
     // causing this Activity lost focus and get focus in a short time,
     // triggering the onPause and onResume callbacks.
     private void setCustomCommandListeners() {
-//        initPerfReportListener();
-//        initAdListener();
+        // initPerfReportListener();
+        // initAdListener();
         initMockAdListener();
         initAuthListener();
     }
 
-    // Override cusObj.reportPerformanceImplement in customScripts/perf.js to make the host
+    // Override cusObj.reportPerformanceImplement in customScripts/perf.js to make
+    // the host
     // call the Demo App's func "uploadPerf" when trying to upload perf data.
-    // Demo App add a listener to listen "uploadPerf" method call here, to upload perf data by
+    // Demo App add a listener to listen "uploadPerf" method call here, to upload
+    // perf data by
     // DataFinder SDK(AppLog.onEventV3).
     private void initPerfReportListener() {
         hostHandle.setCustomCommandListener("uploadPerf", (customCommandHandle, bundle) -> {
@@ -561,9 +563,12 @@ public class MultiProcHostContainerActivityTemplate extends AppCompatActivity {
         });
     }
 
-    // Override tj.createRewardedVideoAd in customScripts/ad.js to make the host call Demo App's func
-    // "loadRewardAd" and "showRewardAd" when mini game developers are trying to create a rewarded Ad.
-    // Demo App add listener to listen "loadRewardAd" and "showRewardAd" method call here, to create
+    // Override tj.createRewardedVideoAd in customScripts/ad.js to make the host
+    // call Demo App's func
+    // "loadRewardAd" and "showRewardAd" when mini game developers are trying to
+    // create a rewarded Ad.
+    // Demo App add listener to listen "loadRewardAd" and "showRewardAd" method call
+    // here, to create
     // ad by ToBid Ad SDK.
     private void initAdListener() {
         if (adManager == null) {
@@ -627,8 +632,10 @@ public class MultiProcHostContainerActivityTemplate extends AppCompatActivity {
         }));
     }
 
-    // Read a mock game js script testScripts/mock_ad.js, which simulates the mini game developers
-    // to call the rewarded ad APIs. And use CustomCommand.runCustomScript() to run this script 20s
+    // Read a mock game js script testScripts/mock_ad.js, which simulates the mini
+    // game developers
+    // to call the rewarded ad APIs. And use CustomCommand.runCustomScript() to run
+    // this script 20s
     // after the game is played.
     private void mockMiniGameCallRewardedAdAPI(Context context) {
         mockMiniGameCallAPI(context, "testScripts/mock_ad.js");
@@ -690,14 +697,14 @@ public class MultiProcHostContainerActivityTemplate extends AppCompatActivity {
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         if (getIntent() == intent) {
-            Log.i("MultiProcess", "a same Intent");
+            Log.i("SingleProcess", "a same Intent");
             return;
         }
 
         setIntent(intent);
         String newLaunchKey = getIntent().getStringExtra("gameId");
         boolean newIsTempSession = getIntent().getBooleanExtra("isTempSession", false);
-        Log.i("MultiProcess", "newLaunchKey: " + newLaunchKey + "launchKey" + launchKey);
+        Log.i("SingleProcess", "newLaunchKey: " + newLaunchKey + "launchKey" + launchKey);
 
         if (Objects.equals(newLaunchKey, launchKey) && newIsTempSession == isTempSession) {
             return;
@@ -708,4 +715,3 @@ public class MultiProcHostContainerActivityTemplate extends AppCompatActivity {
     }
 
 }
-

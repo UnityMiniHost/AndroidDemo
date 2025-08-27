@@ -1,7 +1,6 @@
 package com.u3d.appwithhostsdkdemo.login;
 
 import com.u3d.appwithhostsdkdemo.util.SharedPreferencesManager;
-import com.u3d.webglhost.toolkit.multiproc.MultiProcessLauncher;
 
 // This class is used to mock a login SDK, which provides APIs:
 // getCode(): Return Code of your auth system, which is used to get Session Info of a user by code2Session API
@@ -26,8 +25,6 @@ public class LoginMockSDK {
 
     public static void changeUser(String userId) {
         SharedPreferencesManager.getInstance().putString(SP_KEY_USER_ID, userId);
-
-        MultiProcessLauncher.terminateAllGame();
     }
 
 }

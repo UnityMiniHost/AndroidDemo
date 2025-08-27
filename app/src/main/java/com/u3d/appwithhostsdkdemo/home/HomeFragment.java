@@ -25,12 +25,12 @@ import com.u3d.appwithhostsdkdemo.home.ui.HorizontalHistoryAdapter;
 import com.u3d.appwithhostsdkdemo.home.ui.HorizontalHistoryItemDecoration;
 import com.u3d.appwithhostsdkdemo.home.ui.SettingModal;
 import com.u3d.appwithhostsdkdemo.home.ui.VerticalGameAdapter;
+import com.u3d.appwithhostsdkdemo.host.HostContainerActivity;
 import com.u3d.appwithhostsdkdemo.recentlyPlayed.HistoryManager;
 import com.u3d.appwithhostsdkdemo.recentlyPlayed.PlayedGamesActivity;
 import com.u3d.appwithhostsdkdemo.util.UIUtils;
 import com.u3d.webglhost.toolkit.data.history.HistoryModel;
 import com.u3d.webglhost.toolkit.model.GameModel;
-import com.u3d.webglhost.toolkit.multiproc.MultiProcessLauncher;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -156,12 +156,12 @@ public class HomeFragment extends Fragment {
             return;
         }
 
-        Log.i("MultiProcess", "launchKey: " + launchKey + " title: " + title);
-        MultiProcessLauncher.launch(context, launchKey, intent -> {
-            intent.putExtra("v8LibPath", MainActivity.v8LibPath);
-            intent.putExtra("isTempSession", false);
-            intent.putExtra("title", title);
-        });
+        Log.i("SingleProcess", "launchKey: " + launchKey + " title: " + title);
+        Intent intent = new Intent(context, HostContainerActivity.class);
+        intent.putExtra("gameId", launchKey);
+        intent.putExtra("isTempSession", false);
+        intent.putExtra("title", title);
+        startActivity(intent);
     }
 
     private void initSetting(View view) {
