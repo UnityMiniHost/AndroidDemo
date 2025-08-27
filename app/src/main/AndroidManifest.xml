@@ -44,29 +44,8 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-
-        <activity android:name=".host.MultiProcHostContainerActivity1"
+        <activity android:name=".host.HostContainerActivity"
             android:launchMode="singleTask">
-        </activity>
-        <activity android:name=".host.MultiProcHostContainerActivity2"
-            android:launchMode="singleTask"
-            android:process=":hostProc2"
-            android:taskAffinity="com.u3d.appwithhostsdkdemo.host.affinity2">
-        </activity>
-        <activity android:name=".host.MultiProcHostContainerActivity3"
-            android:launchMode="singleTask"
-            android:process=":hostProc3"
-            android:taskAffinity="com.u3d.appwithhostsdkdemo.host.affinity3">
-        </activity>
-        <activity android:name=".host.MultiProcHostContainerActivity4"
-            android:launchMode="singleTask"
-            android:process=":hostProc4"
-            android:taskAffinity="com.u3d.appwithhostsdkdemo.host.affinity4">
-        </activity>
-        <activity android:name=".host.MultiProcHostContainerActivity5"
-            android:launchMode="singleTask"
-            android:process=":hostProc5"
-            android:taskAffinity="com.u3d.appwithhostsdkdemo.host.affinity5">
         </activity>
 
         <activity android:name=".recentlyPlayed.PlayedGamesActivity">

@@ -4,6 +4,7 @@ package com.u3d.appwithhostsdkdemo.scan;
 import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
@@ -28,7 +29,7 @@ import com.journeyapps.barcodescanner.DecoratedBarcodeView;
 import com.journeyapps.barcodescanner.DefaultDecoderFactory;
 import com.u3d.appwithhostsdkdemo.MainActivity;
 import com.u3d.appwithhostsdkdemo.R;
-import com.u3d.webglhost.toolkit.multiproc.MultiProcessLauncher;
+import com.u3d.appwithhostsdkdemo.host.HostContainerActivity;
 
 import java.lang.ref.WeakReference;
 import java.util.Collection;
@@ -71,10 +72,10 @@ public class ScanFragment extends Fragment {
                 return;
             }
 
-            MultiProcessLauncher.launch(activity, downloadUrl, intent -> {
-                intent.putExtra("v8LibPath", MainActivity.v8LibPath);
-                intent.putExtra("isTempSession", true);
-            });
+            Intent intent = new Intent(activity, HostContainerActivity.class);
+            intent.putExtra("gameId", downloadUrl);
+            intent.putExtra("isTempSession", true);
+            startActivity(intent);
         }
     };
 

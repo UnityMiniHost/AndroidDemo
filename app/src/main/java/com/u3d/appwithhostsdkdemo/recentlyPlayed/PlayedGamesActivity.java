@@ -1,5 +1,6 @@
 package com.u3d.appwithhostsdkdemo.recentlyPlayed;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -12,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.u3d.appwithhostsdkdemo.MainActivity;
 import com.u3d.appwithhostsdkdemo.R;
 import com.u3d.appwithhostsdkdemo.home.ui.VerticalHistoryAdapter;
-import com.u3d.webglhost.toolkit.multiproc.MultiProcessLauncher;
+import com.u3d.appwithhostsdkdemo.host.HostContainerActivity;
 
 public class PlayedGamesActivity extends AppCompatActivity {
 
@@ -65,11 +66,11 @@ public class PlayedGamesActivity extends AppCompatActivity {
             return;
         }
 
-        Log.i("MultiProcess", "launchKey: " + launchKey + " title: " +title);
-        MultiProcessLauncher.launch(this, launchKey, intent -> {
-            intent.putExtra("v8LibPath", MainActivity.v8LibPath);
-            intent.putExtra("isTempSession", false);
-            intent.putExtra("title", title);
-        });
+        Log.i("SingleProcess", "launchKey: " + launchKey + " title: " +title);
+        Intent intent = new Intent(this, HostContainerActivity.class);
+        intent.putExtra("gameId", launchKey);
+        intent.putExtra("isTempSession", false);
+        intent.putExtra("title", title);
+        startActivity(intent);
     }
 }
