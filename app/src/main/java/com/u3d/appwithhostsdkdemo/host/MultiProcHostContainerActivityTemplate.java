@@ -497,6 +497,11 @@ public class MultiProcHostContainerActivityTemplate extends AppCompatActivity {
             public void onFailure(Throwable throwable) {
                 showToast("Game package download failed");
             }
+
+            @Override
+            public void onUseCache() {
+                showToast("Game package use cache");
+            }
         });
     }
 
